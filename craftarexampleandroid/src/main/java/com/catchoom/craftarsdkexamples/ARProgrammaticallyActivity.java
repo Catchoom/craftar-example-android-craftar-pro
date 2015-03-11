@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.craftar.CraftARActivity;
@@ -43,7 +44,7 @@ import com.craftar.CraftARSearchResponseHandler;
 import com.craftar.CraftARTracking;
 import com.craftar.ImageRecognition;
 
-public class ARProgrammaticallyActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener {
+public class ARProgrammaticallyActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener, OnClickListener {
 
 	private final String TAG = "ARProgrammaticallyActivity";
 
@@ -52,6 +53,10 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 	CraftARSDK mCraftARSDK;
 	CraftARTracking mTracking;
 	CraftARCloudRecognition mCloudIR;
+
+	private CraftARItemAR myARItem;
+	private boolean isPinned = false;
+	private boolean isTrackingEnabled = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,9 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 		setContentView(mainLayout);
 
 		mScanningLayout = findViewById(R.id.layout_scanning);
+
+		ImageView pinToScreen = (ImageView)findViewById(R.id.pin_to_screen);
+		pinToScreen.setOnClickListener(this);
 
 		/**
 		 * Get the CraftAR SDK instance and initialize the capture
@@ -129,9 +137,14 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 
 	@Override
 	public void searchResults(ArrayList<CraftARResult> results, long l, int i) {
+		if(! mCraftARSDK.isFinding()){
+			return; //Ignore results received if finder is not active anymore.
+		}
+
 		/**
 		 * This is called when a search is finalized. Check if we have any results...
 		 */
+
 		if(results.size() != 0){
 			/**
 			 * Each result contains information about the match:
@@ -152,7 +165,7 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 				mCraftARSDK.stopFinder();
 
 				// Cast the found item to an AR item
-				CraftARItemAR myARItem = (CraftARItemAR)item;
+				myARItem = (CraftARItemAR)item;
 				// Add content to the tracking SDK and start AR experience
 
 				// We create a CraftARContentImage programmatically from a resource stored in the SD card.
@@ -169,6 +182,7 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 				if (error == null) {
 					mTracking.startTracking();
 					mScanningLayout.setVisibility(View.GONE);
+					isTrackingEnabled = true;
 				} else {
 					Log.e(TAG, error.getErrorMessage());
 				}
@@ -203,5 +217,20 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 		Toast.makeText(getApplicationContext(), "Camera error", Toast.LENGTH_SHORT).show();		
 	}
 	
+	@Override
+	public void onClick(View v) {
+		
+		if (!isPinned && isTrackingEnabled) {
+			myARItem.setDrawOffTracking(true);
+			mCraftARTracking.stopTracking();
+			isPinned = true;
+		} else if (myARItem != null){
+			myARItem.setDrawOffTracking(false);
+			isPinned = false;
+			mCraftARTracking.startTracking();
+			isTrackingEnabled = true;
+			
+		}
+	}
 
 }
