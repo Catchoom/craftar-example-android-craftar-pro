@@ -35,7 +35,6 @@ import com.craftar.CraftARItem;
 import com.craftar.CraftARItemAR;
 import com.craftar.CraftARResult;
 import com.craftar.CraftARSDK;
-import com.craftar.CraftARSDKException;
 import com.craftar.CraftARSearchResponseHandler;
 import com.craftar.CraftARTracking;
 import com.craftar.ImageRecognition;

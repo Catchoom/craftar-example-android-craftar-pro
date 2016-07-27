@@ -1,4 +1,4 @@
-// com.craftar.craftarexamples is free software. You may use it under the MIT license, which is copied
+ // com.craftar.craftarexamples is free software. You may use it under the MIT license, which is copied
 // below and available at http://opensource.org/licenses/MIT
 //
 // Copyright (c) 2014 Catchoom Technologies S.L.
@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.craftar.CraftARActivity;
 import com.craftar.CraftARCloudRecognition;
@@ -71,7 +72,7 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 
 		mScanningLayout = findViewById(R.id.layout_scanning);
 
-		ImageView pinToScreen = (ImageView)findViewById(R.id.pin_to_screen);
+		ImageView pinToScreen = (ImageView)findViewById(R.id.attach_to_screen);
 		pinToScreen.setOnClickListener(this);
 
 		/**
@@ -80,6 +81,7 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 		 *
 		 * When the capture is ready onPreviewStarted() will be called.
 		 */
+
 		mCraftARSDK =  CraftARSDK.Instance();
 		mCraftARSDK.startCapture(this);
 
@@ -222,12 +224,12 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 		
 		if (!isPinned && isTrackingEnabled) {
 			myARItem.setDrawOffTracking(true);
-			mCraftARTracking.stopTracking();
+			mTracking.stopTracking();
 			isPinned = true;
 		} else if (myARItem != null){
 			myARItem.setDrawOffTracking(false);
 			isPinned = false;
-			mCraftARTracking.startTracking();
+			mTracking.startTracking();
 			isTrackingEnabled = true;
 			
 		}
