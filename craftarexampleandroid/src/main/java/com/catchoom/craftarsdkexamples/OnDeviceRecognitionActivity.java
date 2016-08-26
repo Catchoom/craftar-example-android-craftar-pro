@@ -36,15 +36,16 @@ import com.craftar.CraftARActivity;
 import com.craftar.CraftARCloudRecognition;
 import com.craftar.CraftARError;
 import com.craftar.CraftARItem;
+import com.craftar.CraftAROnDeviceIR;
 import com.craftar.CraftARResult;
 import com.craftar.CraftARSDK;
 import com.craftar.CraftARSearchResponseHandler;
 import com.craftar.CraftARTracking;
 import com.craftar.ImageRecognition;
 
-public class RecognitionOnlyActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener, View.OnClickListener {
+public class OnDeviceRecognitionActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener, View.OnClickListener {
 
-	private final String TAG = "RecognitionOnlyActivity";
+	private final String TAG = "OnDeviceRecognitionActivity";
 
 	private View mScanningLayout;
 	private View mTapToScanLayout;
@@ -52,7 +53,7 @@ public class RecognitionOnlyActivity extends CraftARActivity implements CraftARS
 
 	CraftARTracking mTracking;
 	CraftARSDK mCraftARSDK;
-	CraftARCloudRecognition mCloudIR;
+	CraftAROnDeviceIR mOnDeviceIR;
 
 
 	@Override
@@ -78,10 +79,10 @@ public class RecognitionOnlyActivity extends CraftARActivity implements CraftARS
 
 	@Override
 	public void onPreviewStarted(int frameWidth, int frameHeight) {
-		mCloudIR = CraftARCloudRecognition.Instance();
-		mCloudIR.setCraftARSearchResponseHandler(this);
-		mCloudIR.setCollection(Config.MY_COLLECTION_TOKEN, this);
-		mCraftARSDK.setSearchController(mCloudIR.getSearchController());
+		mOnDeviceIR = CraftAROnDeviceIR.Instance();
+		mOnDeviceIR.setCraftARSearchResponseHandler(this);
+		mOnDeviceIR.setCollection(Config.MY_COLLECTION_TOKEN, this);
+		mCraftARSDK.setSearchController(mOnDeviceIR.getSearchController());
 	}
 
 

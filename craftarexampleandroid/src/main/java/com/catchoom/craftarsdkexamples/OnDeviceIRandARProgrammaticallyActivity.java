@@ -36,6 +36,7 @@ import com.craftar.CraftARContentImage;
 import com.craftar.CraftARError;
 import com.craftar.CraftARItem;
 import com.craftar.CraftARItemAR;
+import com.craftar.CraftAROnDeviceIR;
 import com.craftar.CraftARResult;
 import com.craftar.CraftARSDK;
 import com.craftar.CraftARSDKException;
@@ -43,15 +44,15 @@ import com.craftar.CraftARSearchResponseHandler;
 import com.craftar.CraftARTracking;
 import com.craftar.ImageRecognition;
 
-public class ARProgrammaticallyActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener {
+public class OnDeviceIRandARProgrammaticallyActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener {
 
-	private final String TAG = "ARProgrammaticallyActivity";
+	private final String TAG = "OnDeviceIRandARProgrammaticallyActivity";
 
 	private View mScanningLayout;
 
 	CraftARSDK mCraftARSDK;
 	CraftARTracking mTracking;
-	CraftARCloudRecognition mCloudIR;
+	CraftAROnDeviceIR mOnDeviceIR;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,8 +81,8 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 		 * Get the Cloud Image Recognition instance and set this class
 		 * as the one to receive search responses.
 		 */
-		mCloudIR = CraftARCloudRecognition.Instance();
-		mCloudIR.setCraftARSearchResponseHandler(this);
+		mOnDeviceIR = CraftAROnDeviceIR.Instance();
+		mOnDeviceIR.setCraftARSearchResponseHandler(this);
 
 		/**
 		 * Set the Search controller from the Cloud IR class.
@@ -89,7 +90,7 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 		 * The searchController is a helper class that receives the camera frames and pictures from the
 		 * SDK and manages the Single shot and the Finder mode searches.
 		 */
-		mCraftARSDK.setSearchController(mCloudIR.getSearchController());
+		mCraftARSDK.setSearchController(mOnDeviceIR.getSearchController());
 
 		/**
 		 * Get the Tracking instance for the AR.
@@ -104,7 +105,7 @@ public class ARProgrammaticallyActivity extends CraftARActivity implements Craft
 		 * Set the collection we want to search with the COLLECITON_TOKEN.
 		 * When the collection is ready, the collectionReady callback will be triggered.
 		 */
-		mCloudIR.setCollection(Config.MY_COLLECTION_TOKEN, this);
+		mOnDeviceIR.setCollection(Config.MY_COLLECTION_TOKEN, this);
 	}
 
 

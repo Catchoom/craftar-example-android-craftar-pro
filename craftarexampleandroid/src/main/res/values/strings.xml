@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">CraftAR SDK Examples</string>
+    <string name="app_name">CraftAR On-device AR+IR SDK Examples</string>
     <string name="title_activity_main">CraftAR SDK</string>
     <string name="action_settings">Settings</string>
     <string name="launchers_howto">How to use the examples</string>
-    <string name="launchers_ar_programmatically">AR programmatically</string>
-    <string name="launchers_ar_from_craftar">AR from CraftAR</string>
-    <string name="launchers_reco_only">Recognition only</string>
+    <string name="launchers_ar_programmatically">On-device IR + AR programmatically</string>
+    <string name="launchers_ar_from_craftar">AR with on-device IR</string>
+    <string name="launchers_reco_only">On-device Recognition</string>
     <string name="launchers_on_device_ar">On-device AR</string>
     <string name="launchers_signup">Sign Up</string>
     <string name="launchers_about">About</string>
@@ -34,14 +34,15 @@
     <string name="howto_common_about_recognition">How we created the experience:</string>
 
     <string name="howto_common_workflow_1">1. Scan reference image</string>
-    <string name="howto_common_workflow_2">2. Cloud recognition</string>
-    <string name="howto_common_workflow_3">3. Receive assets</string>
+    <string name="howto_common_workflow_2">2. On-device recognition</string>
+    <string name="howto_common_workflow_3">3. Load on-device assets</string>
     <string name="howto_common_about_scene_1">1. Upload the reference image through the 
         <a href="http://catchoom.com/documentation/api/management?utm_source=CraftARExamplesApp&amp;utm_medium=Android&amp;utm_campaign=HelpWithAPI">API</a> 
         or the 
         <a href="http://crs.catchoom.com?utm_source=CraftARExamplesApp&amp;utm_medium=Android&amp;utm_campaign=HelpWithAPI">web panel</a>
     </string>
     <string name="howto_common_about_scene_4">4. Publish</string>
+    <string name="howto_common_about_scene_5">5. Generate on-device bundle for On-device IR and AR SDK.</string>
     
     <!-- AR PROGRAMMATICALLY -->
     <string name="howto_arp_main_title">AR experience created programmatically</string>
@@ -50,7 +51,7 @@
     
     <!-- AR FROM CRAFTAR -->
     <string name="howto_ar_craftar_title">AR experience loaded from CraftAR service</string>
-    <string name="howto_ar_craftar_workflow_4">4. AR overlay of scene received from the cloud (crafted previously)</string>
+    <string name="howto_ar_craftar_workflow_4">4. AR overlay of scene loaded on the device</string>
     <string name="howto_ar_craftar_about_scene_2">2. Select the AR (Augmented reality) item type</string>
     <string name="howto_ar_craftar_about_scene_3">3. Set the scene content</string>
 

@@ -28,10 +28,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class LaunchersActivity extends Activity implements OnClickListener {
 
@@ -98,13 +94,13 @@ public class LaunchersActivity extends Activity implements OnClickListener {
 
 		switch(v.getId()){
 			case R.id.play_ar_programmatically:
-				playExampleIntent = new Intent(this, ARProgrammaticallyActivity.class);
+				playExampleIntent = new Intent(this, OnDeviceIRandARProgrammaticallyActivity.class);
 				break;
 			case R.id.play_ar_from_craftar:
-				playExampleIntent = new Intent(this, ARFromCraftARActivity.class);
+				playExampleIntent = new Intent(this, ARWithOnDeviceIRActivity.class);
 				break;
 			case R.id.play_recognition_only:
-				playExampleIntent = new Intent(this, RecognitionOnlyActivity.class);
+				playExampleIntent = new Intent(this, OnDeviceRecognitionActivity.class);
 				break;
 			case R.id.play_on_device_ar:
 				playExampleIntent = new Intent(this, OnDeviceARActivity.class);

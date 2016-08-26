@@ -30,15 +30,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.catchoom.craftarsdkexamples.ARProgrammaticallyActivity"
+            android:name=".OnDeviceIRandARProgrammaticallyActivity"
             android:screenOrientation="portrait" >
             </activity>
         <activity
-            android:name="com.catchoom.craftarsdkexamples.ARFromCraftARActivity"
+            android:name=".ARWithOnDeviceIRActivity"
             android:screenOrientation="portrait" >
             </activity>
         <activity
-            android:name="com.catchoom.craftarsdkexamples.RecognitionOnlyActivity"
+            android:name=".OnDeviceRecognitionActivity"
             android:screenOrientation="portrait" >
             </activity>
         <activity

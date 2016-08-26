@@ -32,18 +32,19 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.craftar.CLog;
 import com.craftar.CraftARError;
 import com.craftar.CraftAROnDeviceCollection;
 import com.craftar.CraftAROnDeviceCollectionManager;
 import com.craftar.CraftAROnDeviceCollectionManager.AddCollectionListener;
+import com.craftar.CraftAROnDeviceIR;
+import com.craftar.ImageRecognition.SetOnDeviceCollectionListener;
 import com.craftar.CraftARSDK;
 
-public class SplashScreenActivity extends Activity implements AddCollectionListener{
+public class SplashScreenActivity extends Activity implements AddCollectionListener, SetOnDeviceCollectionListener {
 
 	private final static String TAG = "SplashScreenActivity";
 	private static final long SPLASH_SCREEN_DELAY = 1000;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,7 +52,7 @@ public class SplashScreenActivity extends Activity implements AddCollectionListe
 		setContentView(R.layout.splash_screen);
 
 		CraftARSDK.Instance().init(getApplicationContext());
-		
+
 		/** We will load the collection for On Device AR ( 4th example). 
 		 * If you use Cloud AR, you don't need to add the collection*/
 
@@ -63,8 +64,7 @@ public class SplashScreenActivity extends Activity implements AddCollectionListe
          */
 		CraftAROnDeviceCollection collection = collectionManager.get(Config.MY_COLLECTION_TOKEN);
 		if(collection != null){
-			Log.d(this.getClass().getSimpleName(), "Collection already added, starting launchers activity!");
-			startLaunchersActivity();
+			CraftAROnDeviceIR.Instance().setCollection(collection, this);
 
 		}else{
 			/**
@@ -74,7 +74,7 @@ public class SplashScreenActivity extends Activity implements AddCollectionListe
            */
 			Log.d(this.getClass().getSimpleName(), "Collection NOT added, adding collection");
 			collectionManager.addCollection("arbundle.zip", this);
-			
+
 			//Alternatively, you can also download the collection from CraftAR using the token, instead of embedding it into the app resources.
 			//collectionManager.addCollectionWithToken(TOKEN, this); 
 		}
@@ -82,11 +82,11 @@ public class SplashScreenActivity extends Activity implements AddCollectionListe
 
 	@Override
 	public void collectionAdded(CraftAROnDeviceCollection collection) {
-		
+
 		/**
          * The collection is on the device and ready to use!
          */
-		startLaunchersActivity();
+		CraftAROnDeviceIR.Instance().setCollection(collection, this);
 	}
 
 	@Override
@@ -97,10 +97,10 @@ public class SplashScreenActivity extends Activity implements AddCollectionListe
 
 	@Override
 	public void addCollectionProgress(float progress) {
-		Log.d(TAG, "addCollectionProgress "+progress);
+		Log.d(TAG, "addCollectionProgress " + progress);
 
 	}
-	
+
 	private void startLaunchersActivity(){
 		TimerTask task = new TimerTask() {
 			public void run() {
@@ -113,4 +113,19 @@ public class SplashScreenActivity extends Activity implements AddCollectionListe
 		timer.schedule(task, SPLASH_SCREEN_DELAY);
 	}
 
+	@Override
+	public void setCollectionProgress(double progress) {
+		Log.d(TAG, "set collection Progress " + progress);
+	}
+
+	@Override
+	public void collectionReady() {
+		startLaunchersActivity();
+	}
+
+	@Override
+	public void setCollectionFailed(CraftARError craftARError) {
+		Log.d(TAG, "Error setting collection for on-device IR " + craftARError.getErrorMessage());
+		startLaunchersActivity();
+	}
 }

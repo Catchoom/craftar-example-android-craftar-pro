@@ -40,3 +40,8 @@ Thumbs.db
 .idea/tasks.xml
 .idea/datasources.xml
 .idea/dataSources.ids
+
+*.iml
+
+craftarexampleandroid/src/main/assets/CraftARSDKConfig
+craftarexampleandroid/src/main/jniLibs
