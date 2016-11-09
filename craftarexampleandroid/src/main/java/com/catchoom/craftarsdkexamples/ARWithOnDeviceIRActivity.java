@@ -44,7 +44,7 @@ import com.craftar.ImageRecognition;
 
 public class ARWithOnDeviceIRActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener {
 
-	private final String TAG = "ARWithOnDeviceIR";
+	private final String TAG = "ARWithOnDeviceIRActivity";
 
 	private View mScanningLayout;
 

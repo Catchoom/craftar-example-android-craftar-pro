@@ -45,7 +45,7 @@ import com.craftar.ImageRecognition;
 
 public class OnDeviceRecognitionActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener, View.OnClickListener {
 
-	private final String TAG = "OnDeviceRecognition";
+	private final String TAG = "OnDeviceRecognitionActivity";
 
 	private View mScanningLayout;
 	private View mTapToScanLayout;
