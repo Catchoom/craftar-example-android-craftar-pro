@@ -22,6 +22,7 @@
 
 package com.catchoom.craftarsdkexamples;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,7 +38,7 @@ import com.craftar.CraftAROnDeviceCollection;
 import com.craftar.CraftAROnDeviceCollectionManager;
 import com.craftar.CraftAROnDeviceCollectionManager.AddCollectionListener;
 import com.craftar.CraftAROnDeviceIR;
-import com.craftar.ImageRecognition.SetOnDeviceCollectionListener;
+import com.craftar.SetOnDeviceCollectionListener;
 import com.craftar.CraftARSDK;
 
 public class SplashScreenActivity extends Activity implements AddCollectionListener, SetOnDeviceCollectionListener {
@@ -119,8 +120,17 @@ public class SplashScreenActivity extends Activity implements AddCollectionListe
 	}
 
 	@Override
-	public void collectionReady() {
-		startLaunchersActivity();
+	public void collectionReady(List<CraftARError> errors) {
+
+		if (errors != null) {
+			Toast.makeText(getApplicationContext(), "Collection ready with " + errors.size() + " errors! (CHECK LOGS)", Toast.LENGTH_SHORT).show();
+			for (CraftARError error : errors) {
+				Log.e(TAG, "(" + error.getErrorCode() + "): " + error.getErrorMessage());
+			}
+		} else {
+			Toast.makeText(getApplicationContext(), "Collection ready!", Toast.LENGTH_SHORT).show();
+			startLaunchersActivity();
+		}
 	}
 
 	@Override

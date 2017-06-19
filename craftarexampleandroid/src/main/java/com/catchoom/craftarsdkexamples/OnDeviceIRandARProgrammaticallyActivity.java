@@ -23,6 +23,7 @@
 package com.catchoom.craftarsdkexamples;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -43,10 +44,11 @@ import com.craftar.CraftARSDKException;
 import com.craftar.CraftARSearchResponseHandler;
 import com.craftar.CraftARTracking;
 import com.craftar.ImageRecognition;
+import com.craftar.SetCollectionListener;
 
-public class OnDeviceIRandARProgrammaticallyActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener {
+public class OnDeviceIRandARProgrammaticallyActivity extends CraftARActivity implements CraftARSearchResponseHandler, SetCollectionListener {
 
-	private final String TAG = "OnDeviceIRandARProgrammaticallyActivity";
+	private final String TAG = "OnDeviceIRandARProgr";
 
 	private View mScanningLayout;
 
@@ -108,15 +110,22 @@ public class OnDeviceIRandARProgrammaticallyActivity extends CraftARActivity imp
 		mOnDeviceIR.setCollection(Config.MY_COLLECTION_TOKEN, this);
 	}
 
-
 	@Override
-	public void collectionReady() {
+	public void collectionReady(List<CraftARError> errors) {
 		/**
 		 * Start searching in finder mode. The searchResults() method of the
 		 * CraftARSearchResponseHandler previously set to the SDK will be triggered when some results
 		 * are found.
 		 */
-		mCraftARSDK.startFinder();
+		if (errors != null) {
+			Toast.makeText(getApplicationContext(), "Collection ready with " + errors.size() + " errors! (CHECK LOGS)", Toast.LENGTH_SHORT).show();
+			for (CraftARError error : errors) {
+				Log.e(TAG, "(" + error.getErrorCode() + "): " + error.getErrorMessage());
+			}
+		} else {
+			Toast.makeText(getApplicationContext(), "Collection ready!", Toast.LENGTH_SHORT).show();
+			mCraftARSDK.startFinder();
+		}
 	}
 
 	@Override

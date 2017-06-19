@@ -23,6 +23,7 @@
 package com.catchoom.craftarsdkexamples;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -42,10 +43,11 @@ import com.craftar.CraftARSDK;
 import com.craftar.CraftARSearchResponseHandler;
 import com.craftar.CraftARTracking;
 import com.craftar.ImageRecognition;
+import com.craftar.SetCollectionListener;
 
-public class OnDeviceRecognitionActivity extends CraftARActivity implements CraftARSearchResponseHandler, ImageRecognition.SetCollectionListener, View.OnClickListener {
+public class OnDeviceRecognitionActivity extends CraftARActivity implements CraftARSearchResponseHandler, SetCollectionListener, View.OnClickListener {
 
-	private final String TAG = "OnDeviceRecognitionActivity";
+	private final String TAG = "OnDeviceRecognition";
 
 	private View mScanningLayout;
 	private View mTapToScanLayout;
@@ -85,11 +87,18 @@ public class OnDeviceRecognitionActivity extends CraftARActivity implements Craf
 		mCraftARSDK.setSearchController(mOnDeviceIR.getSearchController());
 	}
 
-
 	@Override
-	public void collectionReady() {
-		mTapToScanLayout.setClickable(true);
+	public void collectionReady(List<CraftARError> errors) {
 
+		if (errors != null) {
+			Toast.makeText(getApplicationContext(), "Collection ready with " + errors.size() + " errors! (CHECK LOGS)", Toast.LENGTH_SHORT).show();
+			for (CraftARError error : errors) {
+				Log.e(TAG, "(" + error.getErrorCode() + "): " + error.getErrorMessage());
+			}
+		} else {
+			Toast.makeText(getApplicationContext(), "Collection ready!", Toast.LENGTH_SHORT).show();
+			mTapToScanLayout.setClickable(true);
+		}
 	}
 
 	@Override
