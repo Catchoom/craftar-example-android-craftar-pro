@@ -133,10 +133,15 @@ public class OnDeviceRecognitionActivity extends CraftARActivity implements Craf
 	@Override
 	public void searchFailed(CraftARError craftARError, int requestCode) {
 		Log.d(TAG,"search failed!");
-		Toast.makeText(getBaseContext(), getString(R.string.recognition_only_toast_nothing_found), Toast.LENGTH_SHORT).show();
-		mScanningLayout.setVisibility(View.GONE);
-		mTapToScanLayout.setVisibility(View.VISIBLE);
-		mCraftARSDK.getCamera().restartCapture();
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(getBaseContext(), getString(R.string.recognition_only_toast_nothing_found), Toast.LENGTH_SHORT).show();
+				mScanningLayout.setVisibility(View.GONE);
+				mTapToScanLayout.setVisibility(View.VISIBLE);
+				mCraftARSDK.getCamera().restartCapture();
+			}
+		});
 	}
 
 	@Override
