@@ -45,8 +45,9 @@ import com.craftar.CraftARSearchResponseHandler;
 import com.craftar.CraftARTracking;
 import com.craftar.ImageRecognition;
 import com.craftar.SetCollectionListener;
+import com.craftar.SetOnDeviceCollectionListener;
 
-public class OnDeviceIRandARProgrammaticallyActivity extends CraftARActivity implements CraftARSearchResponseHandler, SetCollectionListener {
+public class OnDeviceIRandARProgrammaticallyActivity extends CraftARActivity implements CraftARSearchResponseHandler, SetOnDeviceCollectionListener {
 
 	private final String TAG = "OnDeviceIRandARProgr";
 
@@ -108,6 +109,11 @@ public class OnDeviceIRandARProgrammaticallyActivity extends CraftARActivity imp
 		 * When the collection is ready, the collectionReady callback will be triggered.
 		 */
 		mOnDeviceIR.setCollection(Config.MY_COLLECTION_TOKEN, this);
+	}
+
+	@Override
+	public void setCollectionProgress(double v) {
+
 	}
 
 	@Override

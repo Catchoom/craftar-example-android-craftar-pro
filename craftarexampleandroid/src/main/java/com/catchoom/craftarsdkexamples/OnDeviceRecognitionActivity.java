@@ -44,8 +44,9 @@ import com.craftar.CraftARSearchResponseHandler;
 import com.craftar.CraftARTracking;
 import com.craftar.ImageRecognition;
 import com.craftar.SetCollectionListener;
+import com.craftar.SetOnDeviceCollectionListener;
 
-public class OnDeviceRecognitionActivity extends CraftARActivity implements CraftARSearchResponseHandler, SetCollectionListener, View.OnClickListener {
+public class OnDeviceRecognitionActivity extends CraftARActivity implements CraftARSearchResponseHandler, SetOnDeviceCollectionListener, View.OnClickListener {
 
 	private final String TAG = "OnDeviceRecognition";
 
@@ -85,6 +86,11 @@ public class OnDeviceRecognitionActivity extends CraftARActivity implements Craf
 		mOnDeviceIR.setCraftARSearchResponseHandler(this);
 		mOnDeviceIR.setCollection(Config.MY_COLLECTION_TOKEN, this);
 		mCraftARSDK.setSearchController(mOnDeviceIR.getSearchController());
+	}
+
+	@Override
+	public void setCollectionProgress(double v) {
+
 	}
 
 	@Override
