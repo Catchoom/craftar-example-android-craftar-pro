@@ -42,7 +42,7 @@
         <a href="http://crs.catchoom.com?utm_source=CraftARExamplesApp&amp;utm_medium=Android&amp;utm_campaign=HelpWithAPI">web panel</a>
     </string>
     <string name="howto_common_about_scene_4">4. Publish</string>
-    <string name="howto_common_about_scene_5">5. Generate on-device bundle for On-device IR and AR SDK.</string>
+    <string name="howto_common_about_scene_5">5. Generate on-device bundle for the CraftAR Pro SDK.</string>
     
     <!-- AR PROGRAMMATICALLY -->
     <string name="howto_arp_main_title">AR experience created programmatically</string>
