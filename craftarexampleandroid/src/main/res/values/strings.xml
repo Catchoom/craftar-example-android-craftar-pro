@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">CraftAR On-device AR+IR SDK Examples</string>
+    <string name="app_name">CraftAR Pro SDK Examples</string>
     <string name="title_activity_main">CraftAR SDK</string>
     <string name="action_settings">Settings</string>
     <string name="launchers_howto">How to use the examples</string>
