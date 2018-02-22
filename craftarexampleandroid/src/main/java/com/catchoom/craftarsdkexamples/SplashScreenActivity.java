@@ -22,17 +22,24 @@
 
 package com.catchoom.craftarsdkexamples;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.craftar.CLog;
 import com.craftar.CraftARError;
 import com.craftar.CraftAROnDeviceCollection;
 import com.craftar.CraftAROnDeviceCollectionManager;
@@ -54,30 +61,118 @@ public class SplashScreenActivity extends Activity implements AddCollectionListe
 
 		CraftARSDK.Instance().init(getApplicationContext());
 
-		/** We will load the collection for On Device AR ( 4th example). 
+		checkPermissions();
+	}
+
+	private static final int MY_PERMISSIONS_REQUEST = 0;
+
+	public void checkPermissions() {
+		ArrayList<String> permissions = new ArrayList<>();
+		if (ContextCompat.checkSelfPermission(this,
+				Manifest.permission.CAMERA)
+				!= PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+					Manifest.permission.CAMERA)) {
+				CLog.e("Camera permission was denied by user");
+			} else {
+				permissions.add(Manifest.permission.CAMERA);
+			}
+		}
+		if (ContextCompat.checkSelfPermission(this,
+				Manifest.permission.WRITE_EXTERNAL_STORAGE)
+				!= PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+					Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+				CLog.e("Storage permission was denied by user");
+			} else {
+				permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+			}
+		} else {
+			setupCollection();
+		}
+		if (!permissions.isEmpty()) {
+			ActivityCompat.requestPermissions(this,
+					permissions.toArray(new String[permissions.size()]),
+					MY_PERMISSIONS_REQUEST);
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode,
+										   String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case MY_PERMISSIONS_REQUEST: {
+				for (int i = 0; i < grantResults.length; i++) {
+					switch (permissions[i]) {
+						case Manifest.permission.CAMERA:
+							if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+								CLog.d("Have camera permission");
+							} else {
+								CLog.d("Don't camera permission");
+							}
+							break;
+						case Manifest.permission.WRITE_EXTERNAL_STORAGE:
+							if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+								CLog.d("Have storage permission");
+								setupCollection();
+							} else {
+								CLog.d("Don't storage permission");
+							}
+							break;
+					}
+				}
+			}
+		}
+	}
+
+	public void setupCollection() {
+
+		/** We will load the collection for On Device AR ( 4th example).
 		 * If you use Cloud AR, you don't need to add the collection*/
 
 		CraftAROnDeviceCollectionManager collectionManager = CraftAROnDeviceCollectionManager.Instance();
 
-        /**
-         * The on-device collection may already be added to the device (we just add it once)
-         * we can use the token to retrieve it.
-         */
+		/**
+		 * The on-device collection may already be added to the device (we just add it once)
+		 * we can use the token to retrieve it.
+		 */
 		CraftAROnDeviceCollection collection = collectionManager.get(Config.MY_COLLECTION_TOKEN);
 		if(collection != null){
-			CraftAROnDeviceIR.Instance().setCollection(collection, this);
+			collection.sync(new CraftAROnDeviceCollectionManager.SyncCollectionListener() {
+				@Override
+				public void syncSuccessful(CraftAROnDeviceCollection craftAROnDeviceCollection) {
+					CraftAROnDeviceIR.Instance().setCollection(craftAROnDeviceCollection, SplashScreenActivity.this);
+				}
+
+				@Override
+				public void syncFinishedWithErrors(CraftAROnDeviceCollection craftAROnDeviceCollection, CraftARError craftARError) {
+					CLog.e("Synced with errors: " + craftARError.getErrorMessage());
+					CraftAROnDeviceIR.Instance().setCollection(craftAROnDeviceCollection, SplashScreenActivity.this);
+				}
+
+				@Override
+				public void syncProgress(CraftAROnDeviceCollection craftAROnDeviceCollection, float v) {
+					CLog.d("sync progress: " + v);
+				}
+
+				@Override
+				public void syncFailed(CraftAROnDeviceCollection craftAROnDeviceCollection, CraftARError craftARError) {
+					CLog.w("Error, not synced: " + craftARError.getErrorMessage());
+					CraftAROnDeviceIR.Instance().setCollection(craftAROnDeviceCollection, SplashScreenActivity.this);
+				}
+			});
 
 		}else{
 			/**
-           * If not, we get the path for the bundle and add the collection to the device first.
-           * The addCollection  method receives an AddCollectionListener instance that will receive
-           * the callbacks when the collection is ready.
-           */
+			 * If not, we get the path for the bundle and add the collection to the device first.
+			 * The addCollection  method receives an AddCollectionListener instance that will receive
+			 * the callbacks when the collection is ready.
+			 */
 			Log.d(this.getClass().getSimpleName(), "Collection NOT added, adding collection");
 			collectionManager.addCollection("arbundle.zip", this);
 
 			//Alternatively, you can also download the collection from CraftAR using the token, instead of embedding it into the app resources.
-			//collectionManager.addCollectionWithToken(TOKEN, this); 
+			//collectionManager.addCollectionWithToken(Config.MY_COLLECTION_TOKEN, this);
 		}
 	}
 
